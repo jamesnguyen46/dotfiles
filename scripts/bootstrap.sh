@@ -16,10 +16,12 @@ fi
 # Local repo path
 LOCAL_REPO_DIR="$HOME/.dotfiles"
 LOCAL_RC_FILE="$LOCAL_REPO_DIR/configs/.$(basename "$SHELL")rc"
+LOCAL_GIT_CFG_FILE="$LOCAL_REPO_DIR/configs/gitconfig/gitconfig.sh"
 BACKUP_SUFFIX="dotfilesbackup"
 
 # System file path
 RC_FILE="$HOME/.$(basename "$SHELL")rc"
+GITCONFIG_FILE="$HOME/.gitconfig"
 
 # Github repository
 REPO_NAME="jamesnguyen46/dotfiles"
@@ -65,6 +67,7 @@ parse_args() {
 run_install() {
     setup_dotfiles_repo
     create_symlinks
+    generate_gitconfig
 }
 
 setup_dotfiles_repo() {
@@ -122,6 +125,18 @@ create_symlinks() {
     show_done "Created $RC_FILE symlink."
 }
 
+generate_gitconfig() {
+    show_step "Generate .gitconfig file."
+
+    # Back up the global .gitconfig file
+    backup_file "$GITCONFIG_FILE"
+
+    # Run script to generate new gitconfig file
+    source "$LOCAL_GIT_CFG_FILE"
+
+    show_done "Generated \"$GITCONFIG_FILE\"."
+}
+
 # ------- Uninstalling --------
 
 run_uninstall() {
@@ -135,6 +150,7 @@ run_uninstall() {
 
     remove_dotfile_folder
     restore_origin_rc_file
+    restore_origin_gitconfig
 }
 
 remove_dotfile_folder() {
@@ -151,6 +167,11 @@ remove_dotfile_folder() {
 restore_origin_rc_file() {
     show_step "Restore \"$RC_FILE\"."
     restore_file "$RC_FILE"
+}
+
+restore_origin_gitconfig() {
+    show_step "Restore \"$GITCONFIG_FILE\"."
+    restore_file "$GITCONFIG_FILE"
 }
 
 # ------- Utilities --------
