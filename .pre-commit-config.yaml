@@ -1,0 +1,36 @@
+repos:
+- repo: https://github.com/jamesnguyen46/pre-commit-hook-group
+  rev: v0.2.0
+  hooks:
+  - id: common-group
+  - id: yaml-group
+  - id: markdown-group
+- repo: local
+  hooks:
+  - id: shellcheck
+    name: shell code analysis
+    language: system
+    entry: shellcheck
+    args: [--severity=warning, --exclude=SC1090]
+    types: [shell]
+    # shellcheck does not support zsh.
+    exclude: |
+      (?x)(
+        configs/.zshrc
+      )
+    verbose: true
+    require_serial: true
+  - id: shfmt
+    name: shell formatter
+    language: system
+    # https://github.com/mvdan/sh/blob/master/cmd/shfmt/shfmt.1.scd
+    entry: shfmt -l -w -d -i=4 -ci -sr
+    types: [shell]
+    # shfmt does not support zsh parser.
+    # FIXME : follow https://github.com/mvdan/sh/issues/120
+    exclude: |
+      (?x)(
+        configs/.zshrc
+      )
+    verbose: true
+    require_serial: true
