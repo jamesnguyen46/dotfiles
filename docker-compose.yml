@@ -1,0 +1,35 @@
+version: '3'
+services:
+  ubuntu-bash:
+    build:
+      context: .
+      args:
+        DEFAULT_SHELL: bash
+    stdin_open: true
+    tty: true
+    volumes:
+    - .:/home/jamesnguyen/.dotfiles
+    working_dir: /home/jamesnguyen/.dotfiles
+    command: >
+      /bin/sh -c "\
+        scripts/bootstrap.sh install -l > /dev/null && \
+        clear && \
+        bash \
+        "
+
+  ubuntu-zsh:
+    build:
+      context: .
+      args:
+        DEFAULT_SHELL: zsh
+    stdin_open: true
+    tty: true
+    volumes:
+    - .:/home/jamesnguyen/.dotfiles
+    working_dir: /home/jamesnguyen/.dotfiles
+    command: >
+      /bin/sh -c "\
+        scripts/bootstrap.sh install -l > /dev/null && \
+        clear && \
+        zsh \
+        "
