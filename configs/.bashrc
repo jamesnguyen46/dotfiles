@@ -2,20 +2,20 @@
 
 LOCAL_REPO_DIR="$HOME/.dotfiles"
 ALIASES_DIR="$LOCAL_REPO_DIR/configs/aliases"
-ENV_DIR="$LOCAL_REPO_DIR/configs/environtments"
+ENV_DIR="$LOCAL_REPO_DIR/configs/envs"
 
 source "$LOCAL_REPO_DIR/configs/utils.sh"
 
 # Load all envs
 if [[ -d "$ENV_DIR" ]]; then
-    for file in "$ENV_DIR"/**/*.sh; do
+    while IFS= read -r -d '' file; do
         source "$file"
-    done
+    done < <(find $ENV_DIR -name '*.sh' -print0)
 fi
 
 # Load all aliases
 if [[ -d "$ALIASES_DIR" ]]; then
-    for file in "$ALIASES_DIR"/**/*.sh; do
+    while IFS= read -r -d '' file; do
         source "$file"
-    done
+    done < <(find $ALIASES_DIR -name '*.sh' -print0)
 fi
