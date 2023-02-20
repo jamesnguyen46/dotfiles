@@ -15,7 +15,7 @@ alias gcal="gcloud auth list"
 
 # Components
 alias gcpi="gcloud components install"
-alias gcjl="gcloud components list"
+alias gcpl="gcloud components list"
 alias gcpr="gcloud components remove"
 alias gcpu="gcloud components update"
 
@@ -24,24 +24,28 @@ alias gcfa="gcloud_configuration_activate_r1_configname"
 alias gcfc="gcloud_configuration_create_r1_configname_r2_account_r3_project_o4_zone_o5_region"
 alias gcfd="gcloud_configuration_delete_r1_configname"
 alias gcfg="gcloud_configuration_get_o1_configname_o2_propertyname"
-alias gcfr="gcloud_configuration_rename_r1_configname_r2_confignewname"
+alias gcfl="gcloud_configuration_list_o1_configname"
+alias gcfn="gcloud_configuration_rename_r1_configname_r2_confignewname"
 alias gcfs="gcloud_configuration_set_r1_configname_r2_propertyname_r3_value"
 
 # Projects
 alias gcjc="gcloud projects create"
 alias gcjd="gcloud projects delete"
-alias gcjl="gcloud_project_list_with_format_and_sort_create_time"
+alias gcjl="gcloud_project_get_list_with_format_and_sort_create_time"
 alias gcjr="gcloud projects describe"
 alias gcju="gcloud projects update"
 
 # Clusters
 alias gccl="gcloud_cluster_list_o1_configname"
-alias gccre="gcloud_cluster_get_credential_r1_configname_r2_clustername_o3_kubnecontextname"
+alias gccr="gcloud_cluster_get_credential_r1_configname_r2_clustername"
 
 # Virtual Machines & Compute Engine
 alias gcuzl="gcloud compute zones list"
 alias gcush="gcloud compute ssh"
-alias gcbas="gcloud_access_private_cluster_via_bastion_r1_instancename_o2_configname"
+
+# Access the private cluster via bastion
+alias gccrp="gcloud_cluster_get_credential_and_config_proxy_r1_configname_r2_clustername_o3_kubnecontextname"
+alias gcbas="gcloud_access_private_cluster_via_bastion_r1_configname_r2_bastioname"
 
 # ------- Functions -------
 
@@ -78,17 +82,21 @@ gcloud_configuration_delete_r1_configname() {
 }
 
 gcloud_configuration_get_o1_configname_o2_propertyname() {
-    case "$#" in
-        0)
-            gcloud config configurations list
-            ;;
-        1)
-            gcloud config list --configuration "$1"
-            ;;
-        *)
-            gcloud config get "$2" --configuration "$1"
-            ;;
-    esac
+    if [[ "$#" -lt 2 ]]; then
+        gcloud config list --configuration "$1"
+        return
+    fi
+
+    gcloud config get "$2" --configuration "$1"
+}
+
+gcloud_configuration_list_o1_configname() {
+    if [[ -z "$1" ]]; then
+        gcloud config configurations list
+        return
+    fi
+
+    gcloud config configurations list | grep "$1"
 }
 
 gcloud_configuration_rename_r1_configname_r2_confignewname() {
@@ -109,7 +117,7 @@ gcloud_configuration_set_r1_configname_r2_propertyname_r3_value() {
     gcloud config set "$2" "$3" --configuration="$1"
 }
 
-gcloud_project_list_with_format_and_sort_create_time() {
+gcloud_project_get_list_with_format_and_sort_create_time() {
     gcloud projects list \
         --format="table(projectNumber,projectId,name,createTime.date(tz=LOCAL))" \
         --sort-by=createTime
@@ -119,7 +127,7 @@ gcloud_cluster_list_o1_configname() {
     gcloud container clusters list --configuration="$1"
 }
 
-gcloud_cluster_get_credential_r1_configname_r2_clustername_o3_kubnecontextname() {
+gcloud_cluster_get_credential_r1_configname_r2_clustername() {
     if [[ -z "$1" ]]; then
         gcloud container clusters get-credentials "$2" \
             --internal-ip \
@@ -131,6 +139,10 @@ gcloud_cluster_get_credential_r1_configname_r2_clustername_o3_kubnecontextname()
         --internal-ip \
         --configuration="$1" \
         --region="$(gcloud_configuration_get_o1_configname_o2_propertyname $1 compute/region)"
+}
+
+gcloud_clusterget_private_cluster_credential_r1_configname_r2_clustername_o3_kubnecontextname() {
+    gcloud_cluster_get_credential_r1_configname_r2_clustername "$1" "$2"
 
     if [[ -z "$3" ]] || ! command_exists kubectl; then
         return
@@ -145,7 +157,7 @@ gcloud_cluster_get_credential_r1_configname_r2_clustername_o3_kubnecontextname()
     kubectl config set-cluster "$current_cluster_name" --proxy-url=http://localhost:8888
 }
 
-gcloud_access_private_cluster_via_bastion_r1_instancename_o2_configname() {
+gcloud_access_private_cluster_via_bastion_r1_configname_r2_bastioname() {
     if [[ $# -eq 0 ]]; then
         show_error "Instance name is missing."
         return
@@ -153,18 +165,18 @@ gcloud_access_private_cluster_via_bastion_r1_instancename_o2_configname() {
 
     local ssh_flag="-L 8888:127.0.0.1:8888"
 
-    if [[ -z "$2" ]]; then
-        gcush "$1" \
+    if [[ -z "$1" ]]; then
+        gcush "$2" \
             --tunnel-through-iap \
             --zone="$(gcloud_configuration_get_o1_configname_o2_propertyname "" compute/zone)" \
             --ssh-flag="$ssh_flag"
         return
     fi
 
-    gcush "$1" \
+    gcush "$2" \
         --tunnel-through-iap \
-        --zone="$(gcloud_configuration_get_o1_configname_o2_propertyname $2 compute/zone)" \
-        --configuration="$2" \
+        --zone="$(gcloud_configuration_get_o1_configname_o2_propertyname $1 compute/zone)" \
+        --configuration="$1" \
         --ssh-flag="$ssh_flag"
 }
 

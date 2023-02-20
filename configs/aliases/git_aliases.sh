@@ -32,7 +32,7 @@ alias gicl='git clone'
 alias giclr='clean_all_local_branches'
 
 # Config git repository
-alias gicf='config_git_repo_p1_name_p2_email'
+alias gicf='config_git_repo_r1_name_r2_email'
 
 alias gid='git diff'
 
@@ -74,7 +74,7 @@ reset_commit() {
     fi
 }
 
-config_git_repo_p1_name_p2_email() {
+config_git_repo_r1_name_r2_email() {
     git config user.name "$1"
     git config user.email "$2"
     git config core.pager "less -FX"
