@@ -23,6 +23,13 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/jamesnguyen46/dotfiles/mai
 
 *Backup file `*_dotfilesbackup_YYMMDDHHMMSS` will be restored after uninstalling completely.*
 
+## Contents
+
+### Aliases
+
+- [gcloud](docs/gcloud_aliases.md)
+- [kubernetes](docs/kubernetes_aliases.md)
+
 ## Development
 
 ### Code analysis and formatter
