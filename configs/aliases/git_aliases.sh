@@ -6,55 +6,55 @@ if ! command_exists git; then
 fi
 
 # Staged Changes
-alias ga='git_add_pn_file_or_directory'
+alias gia='git_add_pn_file_or_directory'
 
 # Show the local branches.
-alias gb='git branch --list'
+alias gib='git branch --list'
 
 # Show/search the remote branches.
 # Input : the name of branch that you want to find. If no, show all remote branches.
-alias gbr='show_remote_branches'
+alias gibr='show_remote_branches'
 
 # Git commit
-alias gc='git commit --message'
+alias gic='git commit --message'
 
 # Push a empty commit to retry CI pipeline
 # https://dev.to/devsimc/how-to-push-an-empty-commit-28dd
-alias gce='git commit --allow-empty --message "Empty commit to trigger pipeline"'
+alias gice='git commit --allow-empty --message "Empty commit to trigger pipeline"'
 
 # Switch branch and pull lastest source code from remote.
 # Input : the branch name.
-alias gcb='checkout_branch'
+alias gicb='checkout_branch'
 
-alias gcl='git clone'
+alias gicl='git clone'
 
 # Remove all local branches, except "develop", "dev", "main", "master" and the current branch.
-alias gclr='clean_all_local_branches'
+alias giclr='clean_all_local_branches'
 
 # Config git repository
-alias gcf='config_git_repo_p1_name_p2_email'
+alias gicf='config_git_repo_p1_name_p2_email'
 
-alias gd='git diff'
+alias gid='git diff'
 
 # Fetch the remote branches.
-alias gf='git fetch --prune'
+alias gif='git fetch --prune'
 
 # Pull the lastest source code.
-alias gl='git pull'
+alias gil='git pull'
 
 # Show the log of current branch.
 # Input : the log number. Default is 10.
-alias gg='show_log'
+alias gig='show_log'
 
 # Git push
-alias gp='git push'
-alias gpf='git push -f'
+alias gip='git push'
+alias gipf='git push -f'
 
 # Reset the HEAD commit.
 # Input : the number of HEAD commit
-alias gr='reset_commit'
+alias gir='reset_commit'
 
-alias gs='git status'
+alias gis='git status'
 
 # ------- FUNCTIONS -------
 
