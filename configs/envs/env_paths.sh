@@ -1,13 +1,19 @@
 #!/usr/bin/env bash
 
 # ------- Common -------
-# Set PATH, MANPATH, etc., for Homebrew.
-
-if [[ -d "/opt/homebrew" ]]; then
-    eval "$(/opt/homebrew/bin/brew shellenv)"
-fi
-
 export SDK_HOME="$HOME/SDK"
+
+# ------- Homebrew (for MacOSX) -------
+# https://docs.brew.sh/FAQ#why-should-i-install-homebrew-in-the-default-location
+if is_macosx; then
+    if [[ $(uname -m) == 'arm64' ]]; then
+        # For macOS on Apple Silicon/ARM
+        export HOME_BREW_PATH="/opt/homebrew/bin/brew"
+    else
+        # For macOS on intel
+        export HOME_BREW_PATH="/usr/local/bin/brew"
+    fi
+fi
 
 # ------- Android -------
 export ANDROID_SDK="$SDK_HOME/android"
