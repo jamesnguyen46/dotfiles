@@ -40,6 +40,10 @@ alias kns="kubectl get namespaces"
 alias kdl="kubectl_deployment_get_list_r1_namespace"
 alias kdr="kubectl_deployment_restart_r1_namespace_o2_deployment"
 
+# Daemon set
+alias kel="kubectl_daemonset_get_list_r1_namespace"
+alias ker="kubectl_daemonset_restart_r1_namespace_o2_daemonset"
+
 # Pod
 alias kpl="kubectl_pod_get_list_r1_namespace"
 alias kpd="kubectl_pod_delete_r1_namespace_r2_podname"
@@ -135,10 +139,6 @@ kubectl_deployment_get_list_r1_namespace() {
     kubectl get deployment -n "$1"
 }
 
-kubectl_pod_get_list_r1_namespace() {
-    kubectl get pods -n "$1"
-}
-
 kubectl_deployment_restart_r1_namespace_o2_deployment() {
     if [[ -z "$2" ]]; then
         kubectl rollout restart deployment -n "$1"
@@ -146,6 +146,23 @@ kubectl_deployment_restart_r1_namespace_o2_deployment() {
     fi
 
     kubectl rollout restart deployment "$2" -n "$1"
+}
+
+kubectl_daemonset_get_list_r1_namespace() {
+    kubectl get daemonset -n "$1"
+}
+
+kubectl_daemonset_restart_r1_namespace_o2_daemonset() {
+    if [[ -z "$2" ]]; then
+        kubectl rollout restart daemonset -n "$1"
+        return
+    fi
+
+    kubectl rollout restart daemonset "$2" -n "$1"
+}
+
+kubectl_pod_get_list_r1_namespace() {
+    kubectl get pods -n "$1"
 }
 
 kubectl_pod_logs_stream_r1_namespace_r2_podname() {
