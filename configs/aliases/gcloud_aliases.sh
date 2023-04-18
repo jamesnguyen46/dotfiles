@@ -44,8 +44,8 @@ alias gcuzl="gcloud compute zones list"
 alias gcush="gcloud compute ssh"
 
 # Access the private cluster via bastion
-alias gccrp="gcloud_cluster_get_credential_and_config_proxy_r1_configname_r2_clustername_o3_kubnecontextname"
-alias gcbas="gcloud_access_private_cluster_via_bastion_r1_configname_r2_bastioname"
+alias gccrp="gcloud_cluster_get_credential_and_config_proxy_r1_configname_r2_clustername_o3_kubecontextname"
+alias gcbas="gcloud_access_private_cluster_via_bastion_r1_configname_r2_bastioname_o3_sshflag"
 
 # ------- Functions -------
 
@@ -82,7 +82,7 @@ gcloud_configuration_delete_r1_configname() {
 }
 
 gcloud_configuration_get_o1_configname_o2_propertyname() {
-    if [[ "$#" -lt 2 ]]; then
+    if [[ $# -lt 2 ]]; then
         gcloud config list --configuration "$1"
         return
     fi
@@ -141,7 +141,7 @@ gcloud_cluster_get_credential_r1_configname_r2_clustername() {
         --region="$(gcloud_configuration_get_o1_configname_o2_propertyname $1 compute/region)"
 }
 
-gcloud_clusterget_private_cluster_credential_r1_configname_r2_clustername_o3_kubnecontextname() {
+gcloud_cluster_get_credential_and_config_proxy_r1_configname_r2_clustername_o3_kubecontextname() {
     gcloud_cluster_get_credential_r1_configname_r2_clustername "$1" "$2"
 
     if [[ -z "$3" ]] || ! command_exists kubectl; then
@@ -157,20 +157,15 @@ gcloud_clusterget_private_cluster_credential_r1_configname_r2_clustername_o3_kub
     kubectl config set-cluster "$current_cluster_name" --proxy-url=http://localhost:8888
 }
 
-gcloud_access_private_cluster_via_bastion_r1_configname_r2_bastioname() {
-    if [[ $# -eq 0 ]]; then
-        show_error "Instance name is missing."
+gcloud_access_private_cluster_via_bastion_r1_configname_r2_bastioname_o3_sshflag() {
+    if [[ $# -lt 2 ]]; then
+        show_error "Config name or bastion name are missing."
         return
     fi
 
     local ssh_flag="-L 8888:127.0.0.1:8888"
-
-    if [[ -z "$1" ]]; then
-        gcush "$2" \
-            --tunnel-through-iap \
-            --zone="$(gcloud_configuration_get_o1_configname_o2_propertyname "" compute/zone)" \
-            --ssh-flag="$ssh_flag"
-        return
+    if [[ -n "$3" ]]; then
+        ssh_flag="$3"
     fi
 
     gcush "$2" \
