@@ -42,8 +42,13 @@ alias kdr="kubectl_deployment_restart_r1_namespace_o2_deployment"
 
 # Pod
 alias kpl="kubectl_pod_get_list_r1_namespace"
-alias kpd="kubectl_pod_delete_r1_namespace_r2_pod_name"
+alias kpd="kubectl_pod_delete_r1_namespace_r2_podname"
 alias kpe="kubectl_pod_exec_r1_namespace_r2_podname"
+
+# Pod logs
+alias kpo="kubectl logs"
+alias kpof="kubectl_pod_logs_stream_r1_namespace_r2_podname"
+alias kpot="kubectl_pod_logs_since_time_r1_namespace_r2_podname_r3_time_04_outputfile"
 
 # ------- Functions -------
 
@@ -118,7 +123,7 @@ kubectl_edit_secret_r1_namespace_r2_name() {
     kubectl edit secret "$2" -n "$1"
 }
 
-kubectl_pod_delete_r1_namespace_r2_pod_name() {
+kubectl_pod_delete_r1_namespace_r2_podname() {
     kubectl delete pod "$2" -n "$1"
 }
 
@@ -141,4 +146,17 @@ kubectl_deployment_restart_r1_namespace_o2_deployment() {
     fi
 
     kubectl rollout restart deployment "$2" -n "$1"
+}
+
+kubectl_pod_logs_stream_r1_namespace_r2_podname() {
+    kubectl logs -n "$1" -f "$2"
+}
+
+kubectl_pod_logs_since_time_r1_namespace_r2_podname_r3_time_04_outputfile() {
+    if [[ -z "$4" ]]; then
+        kubectl logs -n "$1" "$2" --since-time="$3"
+        return
+    fi
+
+    kubectl logs -n "$1" "$2" --since-time="$3" > "$4"
 }
