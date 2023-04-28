@@ -29,6 +29,17 @@ section_ui() {
 	EOF
 }
 
+section_include() {
+    cat <<- EOF >> $GITCONFIG_FILE
+		[includeIf "gitdir:**/personal/"]
+		    path = $GITCONFIG_DIR/.gitconfig.pers
+
+		[includeIf "gitdir:**/work/"]
+		    path = $GITCONFIG_DIR/.gitconfig.work
+
+	EOF
+}
+
 section_common() {
     local editor="vi"
     # Priority for vscode
@@ -56,12 +67,17 @@ section_common() {
 		    process = git-lfs filter-process
 		    required = true
 
+		[filter "contentFilterScript"]
+		    clean = "$LOCAL_REPO_DIR/scripts/git_smudge_clean_content_filter.sh clean"
+		    smudge = "$LOCAL_REPO_DIR/scripts/git_smudge_clean_content_filter.sh smudge"
+
 	EOF
 }
 
 generate_gitconfig() {
     file_header
     section_ui
+    section_include
     section_common
     file_footer
 }

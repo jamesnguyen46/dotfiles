@@ -1,0 +1,10 @@
+[user]
+    name = ""
+    email = ""
+
+[init]
+    defaultBranch = main
+
+[core]
+    # ssh -i /path/to/private/ssh/key
+    sshCommand = ""

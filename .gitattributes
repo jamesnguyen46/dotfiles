@@ -1,0 +1,2 @@
+configs/gitconfig/.gitconfig.pers filter=contentFilterScript
+configs/gitconfig/.gitconfig.work filter=contentFilterScript
