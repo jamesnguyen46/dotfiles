@@ -22,6 +22,10 @@ ANDROID_BUNDLE_TOOL="$ANDROID_SDK/bundle-tool"
 ANDROID_PLATF_TOOLS="$ANDROID_SDK/platform-tools"
 export ANDROID_PATH="$ANDROID_EMULATOR:$ANDROID_TOOLS:$ANDROID_BUNDLE_TOOL:$ANDROID_PLATF_TOOLS"
 
+# ------- Java -------
+JAVA_HOME=$(/usr/libexec/java_home)
+export JAVA_HOME
+
 # ------- Maven -------
 export MAVEN_PATH="$HOME/Library/apache-maven/bin"
 
@@ -68,4 +72,4 @@ fi
 
 # ------- Set to path environments -------
 PATH="$PATH:$HOME/bin:/usr/local/bin:$HOME_BREW_PATH"
-export PATH="$PATH:$ANDROID_PATH:$MAVEN_PATH:$FLUTTER_SDK:$PYTHON_PATH:$GOLANG_PATH:$MYSQL_PATH"
+export PATH="$PATH:$ANDROID_PATH:$JAVA_HOME:$MAVEN_PATH:$FLUTTER_SDK:$PYTHON_PATH:$GOLANG_PATH:$MYSQL_PATH"
