@@ -27,7 +27,8 @@ alias gidc="git_discard_changes"
 alias gid="git diff"
 alias gids="git diff --staged"
 
-alias gif="git fetch --prune"
+alias gie="git fetch --prune"
+
 alias gifl="git config --list"
 alias gifu="git_config_user_info_r1_name_r2_email"
 
@@ -65,6 +66,8 @@ alias girs="git_reset_o1_commit_no_from_head"
 alias gis="git status"
 
 alias gist="git log --stat"
+
+alias gitl="git_tag_list_o1_number"
 
 alias giw="git show"
 
@@ -179,8 +182,9 @@ git_config_user_info_r1_name_r2_email() {
 git_logs_o1_number() {
     [[ -n "$1" ]] && log_number=$1 || log_number=10
     git log -"$log_number" \
-        --pretty='%C(yellow)%h %C(cyan)%cd%C(auto)%d %C(reset)%s %C(blue)<%ae>' \
-        --graph --branches \
+        --pretty='%C(yellow)%h %C(cyan)%cd%C(auto)%d %C(reset)%s %C(green) by %aN <%ae>' \
+        --graph \
+        --remotes \
         --date=format:'%Y-%m-%d %H:%M:%S' \
         --date-order \
         --abbrev-commit
@@ -188,4 +192,12 @@ git_logs_o1_number() {
 
 git_reset_o1_commit_no_from_head() {
     [[ -n "$1" ]] && git reset --soft HEAD~"$1" || git reset --soft HEAD^
+}
+
+git_tag_list_o1_number() {
+    [[ -n "$1" ]] && tag_count=$1 || tag_count=10
+    git tag \
+        --sort=-taggerdate \
+        --format '%(taggerdate:short)%09%(objectname:short)%09%(refname:short)%09 by %(taggername) %(taggeremail)' |
+        head -n "$tag_count"
 }
