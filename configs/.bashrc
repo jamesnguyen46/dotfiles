@@ -10,12 +10,12 @@ source "$LOCAL_REPO_DIR/configs/utils.sh"
 if [[ -d "$ENV_DIR" ]]; then
     while IFS= read -r -d '' file; do
         source "$file"
-    done < <(find $ENV_DIR -name '*.sh' -print0)
+    done < <(find $ENV_DIR -name '*.sh' -print0 | sort -zV)
 fi
 
 # Load all aliases
 if [[ -d "$ALIASES_DIR" ]]; then
     while IFS= read -r -d '' file; do
         source "$file"
-    done < <(find $ALIASES_DIR -name '*.sh' -print0)
+    done < <(find $ALIASES_DIR -name '*.sh' -print0 | sort -zV)
 fi
