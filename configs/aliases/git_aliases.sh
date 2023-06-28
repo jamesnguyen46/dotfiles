@@ -184,7 +184,6 @@ git_logs_o1_number() {
     git log -"$log_number" \
         --pretty='%C(yellow)%h %C(cyan)%cd%C(auto)%d %C(reset)%s %C(green) by %aN <%ae>' \
         --graph \
-        --remotes \
         --date=format:'%Y-%m-%d %H:%M:%S' \
         --date-order \
         --abbrev-commit
