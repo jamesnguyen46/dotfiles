@@ -44,10 +44,11 @@ POETRY="$HOME/.poetry"
 export PYTHON_PATH="$PYENV_SHIMS:$POETRY/bin"
 
 # ------- Golang -------
-export GO111MODULE="on"
-export GOROOT="/usr/local/go"
-export GOPATH="$HOME/Library/go"
-export GOLANG_PATH="$GOPATH/bin:$GOROOT/bin"
+if command_exists go; then
+    export GOROOT=$(go env GOROOT)
+    export GOPATH=$(go env GOPATH)
+    export GOLANG_PATH="$GOPATH/bin:$GOROOT/bin"
+fi
 
 # ------- mysql-client -------
 # For compilers to find mysql-client
