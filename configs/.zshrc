@@ -21,6 +21,12 @@ else
     ZSH_THEME="robbyrussell"
 fi
 
+# Oh-my-zsh plugins
+plugins=( 
+    zsh-autosuggestions
+    zsh-syntax-highlighting
+)
+
 source "$ZSH/oh-my-zsh.sh"
 
 # Powerlevel10k
