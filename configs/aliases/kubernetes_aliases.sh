@@ -53,6 +53,7 @@ alias kpe="kubectl_pod_exec_r1_namespace_r2_podname"
 alias kpo="kubectl logs"
 alias kpof="kubectl_pod_logs_stream_r1_namespace_r2_podname"
 alias kpot="kubectl_pod_logs_since_time_r1_namespace_r2_podname_r3_time_04_outputfile"
+alias kpol="kubectl_pod_logs_since_time_r1_namespace_r2_podname_r3_linenumber_04_outputfile"
 
 # ------- Functions -------
 
@@ -171,9 +172,18 @@ kubectl_pod_logs_stream_r1_namespace_r2_podname() {
 
 kubectl_pod_logs_since_time_r1_namespace_r2_podname_r3_time_04_outputfile() {
     if [[ -z "$4" ]]; then
-        kubectl logs -n "$1" "$2" --since-time="$3"
+        kubectl logs -n "$1" "$2" --since="$3"
         return
     fi
 
-    kubectl logs -n "$1" "$2" --since-time="$3" > "$4"
+    kubectl logs -n "$1" "$2" --since="$3" > "$4"
+}
+
+kubectl_pod_logs_since_time_r1_namespace_r2_podname_r3_linenumber_04_outputfile() {
+    if [[ -z "$4" ]]; then
+        kubectl logs -n "$1" "$2" --tail="$3"
+        return
+    fi
+
+    kubectl logs -n "$1" "$2" --tail="$3" > "$4"
 }
