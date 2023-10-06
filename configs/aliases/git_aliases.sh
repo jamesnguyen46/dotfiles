@@ -182,6 +182,7 @@ git_config_user_info_r1_name_r2_email() {
 git_logs_o1_number() {
     [[ -n "$1" ]] && log_number=$1 || log_number=10
     git log -"$log_number" \
+        --branches \
         --pretty='%C(yellow)%h %C(cyan)%cd%C(auto)%d %C(reset)%s %C(green) by %aN <%ae>' \
         --graph \
         --date=format:'%Y-%m-%d %H:%M:%S' \
