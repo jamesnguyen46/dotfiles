@@ -22,7 +22,7 @@ else
 fi
 
 # Oh-my-zsh plugins
-plugins=( 
+plugins=(
     zsh-autosuggestions
     zsh-syntax-highlighting
 )

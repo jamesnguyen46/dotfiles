@@ -45,8 +45,10 @@ export PYTHON_PATH="$PYENV_SHIMS:$POETRY/bin"
 
 # ------- Golang -------
 if command_exists go; then
-    export GOROOT=$(go env GOROOT)
-    export GOPATH=$(go env GOPATH)
+    GOROOT_LOCAL=$(go env GOROOT)
+    GOPATH_LOCAL=$(go env GOROOT)
+    export GOROOT="$GOROOT_LOCAL"
+    export GOPATH="$GOPATH_LOCAL"
     export GOLANG_PATH="$GOPATH/bin:$GOROOT/bin"
 fi
 
