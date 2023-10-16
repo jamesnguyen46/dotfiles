@@ -14,6 +14,9 @@ else
     export HOME_BREW_PATH="/usr/local/bin"
 fi
 
+# Need to this first to use `brew`` command for the below paths
+export PATH="$PATH:/usr/local/bin:$HOME_BREW_PATH"
+
 # ------- Android -------
 ANDROID_SDK="$HOME/Library/Android/sdk"
 ANDROID_EMULATOR="$ANDROID_SDK/emulator"
@@ -44,13 +47,15 @@ POETRY="$HOME/.poetry"
 export PYTHON_PATH="$PYENV_SHIMS:$POETRY/bin"
 
 # ------- Golang -------
-if command_exists go; then
-    GOROOT_LOCAL=$(go env GOROOT)
-    GOPATH_LOCAL=$(go env GOROOT)
-    export GOROOT="$GOROOT_LOCAL"
-    export GOPATH="$GOPATH_LOCAL"
-    export GOLANG_PATH="$GOPATH/bin:$GOROOT/bin"
+# Installation by Homebrew
+GOLANG_PATH="$(brew --prefix golang)"
+if [[ -z "$GOLANG_PATH" ]] || [[ ! -d "$GOLANG_PATH" ]]; then
+    # Manual install
+    GOLANG_PATH="/usr/local/go"
 fi
+export GOROOT="$GOLANG_PATH"
+export GOPATH="$HOME/golang"
+export GOLANG_PATH="$GOPATH/bin:$GOROOT/bin"
 
 # ------- mysql-client -------
 # For compilers to find mysql-client
@@ -74,5 +79,4 @@ if [[ -f "$GCLOUD_SDK_PATH/completion.zsh.inc" ]]; then
 fi
 
 # ------- Set to path environments -------
-PATH="$PATH:$HOME/bin:/usr/local/bin:$HOME_BREW_PATH"
 export PATH="$PATH:$ANDROID_PATH:$JAVA_HOME:$MAVEN_PATH:$FLUTTER_SDK:$PYTHON_PATH:$GOLANG_PATH:$MYSQL_PATH"
