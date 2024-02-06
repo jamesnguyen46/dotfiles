@@ -12,7 +12,7 @@ alias k="kubectl"
 
 # Config - contexts
 alias kfxa="kubectl_config_context_active_o1_contextname"
-alias kfxd="kubectl_config_context_list_r1_name"
+alias kfxd="kubectl_config_context_delete_r1_name"
 alias kfxl="kubectl_config_context_list_o1_name"
 alias kfxn="kubectl_config_context_rename_r1_name_r2_newname"
 alias kfxcl="kubectl_config_context_clear_all"
@@ -38,7 +38,9 @@ alias kns="kubectl get namespaces"
 
 # Deployment
 alias kdl="kubectl_deployment_get_list_r1_namespace"
-alias kdr="kubectl_deployment_restart_r1_namespace_o2_deployment"
+alias kdrs="kubectl_deployment_restart_r1_namespace_o2_deployment"
+alias kdrv="kubectl_deployment_revision_history_r1_namespace_r2_deployment_o3_revision"
+alias kdrb="kubectl_deployment_rollback_r1_namespace_r2_deployment_o3_revision"
 
 # Daemon set
 alias kel="kubectl_daemonset_get_list_r1_namespace"
@@ -71,7 +73,7 @@ kubectl_config_context_active_o1_contextname() {
     kubectl config use-context $selected_context
 }
 
-kubectl_config_context_list_r1_name() {
+kubectl_config_context_delete_r1_name() {
     kubectl config delete-context "$1"
 }
 
@@ -147,6 +149,24 @@ kubectl_deployment_restart_r1_namespace_o2_deployment() {
     fi
 
     kubectl rollout restart deployment "$2" -n "$1"
+}
+
+kubectl_deployment_revision_history_r1_namespace_r2_deployment_o3_revision() {
+    if [[ -z "$3" ]]; then
+        kubectl rollout history deployment/"$2" -n "$1"
+        return
+    fi
+
+    kubectl rollout history deployment/"$2" -n "$1" --revision="$3"
+}
+
+kubectl_deployment_rollback_r1_namespace_r2_deployment_o3_revision() {
+    if [[ -z "$3" ]]; then
+        kubectl rollout undo deployment/"$2" -n "$1"
+        return
+    fi
+
+    kubectl rollout undo deployment/"$2" -n "$1" --to-revision="$3"
 }
 
 kubectl_daemonset_get_list_r1_namespace() {

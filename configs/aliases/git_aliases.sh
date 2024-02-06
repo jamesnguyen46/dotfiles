@@ -198,6 +198,6 @@ git_tag_list_o1_number() {
     [[ -n "$1" ]] && tag_count=$1 || tag_count=10
     git tag \
         --sort=-taggerdate \
-        --format '%(taggerdate:short)%09%(objectname:short)%09%(refname:short)%09 by %(taggername) %(taggeremail)' |
+        --format '%(committerdate:short)%09%(objectname:short)%09%(refname:short)%09 by %(committername) %(committeremail)' |
         head -n "$tag_count"
 }

@@ -38,13 +38,14 @@ export FLUTTER_SDK="$HOME/Library/flutter/bin"
 # ------- Python -------
 # Just install pyenv to manage multiple python version.
 # No need to set path for each python version.
-if command_exists pyenv; then
-    PYENV_SHIMS="$(pyenv root)/shims"
-fi
 # Poetry
 POETRY="$HOME/.poetry"
 
-export PYTHON_PATH="$PYENV_SHIMS:$POETRY/bin"
+export PYTHON_PATH="$POETRY/bin"
+
+export PYENV_ROOT="$HOME/.pyenv"
+command -v pyenv > /dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
 
 # ------- Golang -------
 # Installation by Homebrew
