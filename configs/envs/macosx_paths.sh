@@ -25,12 +25,9 @@ ANDROID_BUNDLE_TOOL="$ANDROID_SDK/bundle-tool"
 ANDROID_PLATF_TOOLS="$ANDROID_SDK/platform-tools"
 export ANDROID_PATH="$ANDROID_EMULATOR:$ANDROID_TOOLS:$ANDROID_BUNDLE_TOOL:$ANDROID_PLATF_TOOLS"
 
-# ------- Java -------
-JAVA_HOME=$(/usr/libexec/java_home)
-export JAVA_HOME
-
-# ------- Maven -------
-export MAVEN_PATH="$HOME/Library/apache-maven/bin"
+# ------- Using SDKMAN to manage the Java, Maven, Kotlin, ... version -------
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
 # ------- Flutter -------
 export FLUTTER_SDK="$HOME/Library/flutter/bin"

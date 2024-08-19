@@ -37,3 +37,6 @@ source "$ZSH/oh-my-zsh.sh"
 
     [[ -f "$HOME/.p10k.zsh" ]] && source "$HOME/.p10k.zsh"
 }
+
+# Iterm 2
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
