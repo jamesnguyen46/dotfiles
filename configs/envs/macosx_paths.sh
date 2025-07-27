@@ -15,7 +15,7 @@ else
 fi
 
 # Need to this first to use `brew`` command for the below paths
-export PATH="$PATH:/usr/local/bin:$HOME_BREW_PATH"
+export PATH="$HOME_BREW_PATH:$PATH"
 
 # ------- Android -------
 ANDROID_SDK="$HOME/Library/Android/sdk"
@@ -25,12 +25,9 @@ ANDROID_BUNDLE_TOOL="$ANDROID_SDK/bundle-tool"
 ANDROID_PLATF_TOOLS="$ANDROID_SDK/platform-tools"
 export ANDROID_PATH="$ANDROID_EMULATOR:$ANDROID_TOOLS:$ANDROID_BUNDLE_TOOL:$ANDROID_PLATF_TOOLS"
 
-# ------- Java -------
-JAVA_HOME=$(/usr/libexec/java_home)
-export JAVA_HOME
-
-# ------- Maven -------
-export MAVEN_PATH="$HOME/Library/apache-maven/bin"
+# ------- Using SDKMAN to manage the Java, Maven, Kotlin, ... version -------
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
 # ------- Flutter -------
 export FLUTTER_SDK="$HOME/Library/flutter/bin"
@@ -56,7 +53,7 @@ if [[ -z "$GOLANG_PATH" ]] || [[ ! -d "$GOLANG_PATH" ]]; then
 fi
 export GOROOT="$GOLANG_PATH"
 export GOPATH="$HOME/golang"
-export GOLANG_PATH="$GOPATH/bin:$GOROOT/bin"
+export GOBIN_PATH="$GOPATH/bin:$GOROOT/bin"
 
 # ------- mysql-client -------
 # For compilers to find mysql-client
@@ -80,4 +77,11 @@ if [[ -f "$GCLOUD_SDK_PATH/completion.zsh.inc" ]]; then
 fi
 
 # ------- Set to path environments -------
-export PATH="$PATH:$ANDROID_PATH:$JAVA_HOME:$MAVEN_PATH:$FLUTTER_SDK:$PYTHON_PATH:$GOLANG_PATH:$MYSQL_PATH"
+# Define JAVA_HOME and MAVEN_PATH if not already set
+export JAVA_HOME="${JAVA_HOME:-/Library/Java/JavaVirtualMachines/temurin-17.jdk/Contents/Home}"
+export MAVEN_PATH="${MAVEN_PATH:-$HOME/apache-maven/bin}"
+
+# Added by LM Studio CLI (lms)
+export NOTEBOOKLM_PATH="$HOME/.lmstudio/bin"
+
+export PATH="$PATH:$ANDROID_PATH:$JAVA_HOME/bin:$MAVEN_PATH:$FLUTTER_SDK:$PYTHON_PATH:$GOBIN_PATH:$MYSQL_PATH:$NOTEBOOKLM_PATH"
